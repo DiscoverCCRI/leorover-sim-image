@@ -58,5 +58,12 @@ RUN cd ~/catkin_ws/src \
 && git clone https://github.com/LeoRover/leo_simulator.git \
 && git clone https://github.com/LeoRover/leo_common.git
 
+# Make the package for the API
+RUN cd ~/catkin_ws/src \
+&& git clone https://github.com/DiscoverCCRI/RoverAPI.git \
+&& catkin_create_pkg rover_api rospy roscpp geometry_msgs sensor_msgs \
+&& mv RoverAPI/camera_driver RoverAPI/rover_driver rover_api/src \
+&& rm -r RoverAPI
+
 # Build the catkin workspace
 #RUN . /opt/ros/$ROS_DISTRO/setup.bash && cd ~/catkin_ws && catkin_make
