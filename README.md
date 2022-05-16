@@ -21,5 +21,5 @@ localhost:9000
 To build the simulation suite correctly, change into the ```~/catkin_ws``` directory. From there run the following command:
 ```
 catkin_make
-``
+```
 You should receive an error. Simply run the command a second time, and everything should build properly. Your simulation suite is now all set up.
