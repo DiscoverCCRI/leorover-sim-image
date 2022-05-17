@@ -3,6 +3,7 @@ MAINTAINER Cody Beck <cjb873@nau.edu>
 
 # set environment variables
 ENV ROS_DISTRO=noetic
+ENV DEST=${CATKIN_PACKAGE_BIN_DESTINATION}
 
 #set shell to bash
 SHELL ["/bin/bash", "-c"]
@@ -31,10 +32,6 @@ python3-wstool build-essential
 # Bootstrap rosdep
 RUN sudo rosdep init && rosdep update
 
-# Clean
-RUN sudo apt-get -y autoremove && sudo apt-get -y autoclean 
-RUN rm -rf /var/lib/apt/lists/*
-
 # Get gazebo
 RUN curl -sSL http://get.gazebosim.org | sh
 RUN sudo apt-get -y install ros-noetic-gazebo-ros-pkgs \
@@ -60,10 +57,18 @@ RUN cd ~/catkin_ws/src \
 
 # Make the package for the API
 RUN cd ~/catkin_ws/src \
-&& git clone https://github.com/DiscoverCCRI/RoverAPI.git \
-&& catkin_create_pkg rover_api rospy roscpp geometry_msgs sensor_msgs \
-&& mv RoverAPI/camera_driver RoverAPI/rover_driver rover_api/src \
-&& rm -r RoverAPI
+&& git clone -b simulation https://github.com/DiscoverCCRI/RoverAPI.git \
+&& catkin_create_pkg rover_api rospy roscpp geometry_msgs sensor_msgs 
+RUN mkdir -p ~/catkin_ws/src/rover_api/src/rover_api/ \
+&& cd ~/catkin_ws/src/RoverAPI \
+&& mv camera_driver/discover_camera.py rover_driver/discover_rover.py ~/catkin_ws/src/rover_api/src/rover_api/ \
+&& mv setup.py ~/catkin_ws/src/rover_api \
+&& cd ~/catkin_ws/src/rover_api && echo "catkin_python_setup()" >> CMakeLists.txt \
+&& echo "catkin_install_python(PROGRAMS src/rover_api/discover_rover.py src/rover_api/discover_camera.py DESTINATION $DEST)" >> CMakeLists.txt
+
+# Clean
+RUN sudo apt-get -y autoremove && sudo apt-get -y autoclean 
+RUN rm -rf /var/lib/apt/lists/* && rm -r ~/catkin_ws/src/RoverAPI
 
 # Build the catkin workspace
 #RUN . /opt/ros/$ROS_DISTRO/setup.bash && cd ~/catkin_ws && catkin_make
