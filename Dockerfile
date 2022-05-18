@@ -3,7 +3,6 @@ MAINTAINER Cody Beck <cjb873@nau.edu>
 
 # set environment variables
 ENV ROS_DISTRO=noetic
-ENV DEST=${CATKIN_PACKAGE_BIN_DESTINATION}
 
 #set shell to bash
 SHELL ["/bin/bash", "-c"]
@@ -57,14 +56,17 @@ RUN cd ~/catkin_ws/src \
 
 # Make the package for the API
 RUN cd ~/catkin_ws/src \
-&& git clone -b simulation https://github.com/DiscoverCCRI/RoverAPI.git \
+&& git clone -b simulation https://github.com/DiscoverCCRI/RoverAPI.git 
+RUN cd ~/catkin_ws/src \
 && catkin_create_pkg rover_api rospy roscpp geometry_msgs sensor_msgs 
 RUN mkdir -p ~/catkin_ws/src/rover_api/src/rover_api/ \
 && cd ~/catkin_ws/src/RoverAPI \
 && mv camera_driver/discover_camera.py rover_driver/discover_rover.py ~/catkin_ws/src/rover_api/src/rover_api/ \
-&& mv setup.py ~/catkin_ws/src/rover_api \
+&& mv scripts/setup.py ~/catkin_ws/src/rover_api \
+&& mkdir -p ~/scripts && mv scripts ~/ \
+&& cd ~/scripts && chmod u+x * && rm builder.sh \
 && cd ~/catkin_ws/src/rover_api && echo "catkin_python_setup()" >> CMakeLists.txt \
-&& echo "catkin_install_python(PROGRAMS src/rover_api/discover_rover.py src/rover_api/discover_camera.py DESTINATION $DEST)" >> CMakeLists.txt
+&& echo "catkin_install_python(PROGRAMS src/rover_api/discover_rover.py src/rover_api/discover_camera.py DESTINATION \${CATKIN_PACKAGE_BIN_DESTINATION})" >> CMakeLists.txt
 
 # Clean
 RUN sudo apt-get -y autoremove && sudo apt-get -y autoclean 
