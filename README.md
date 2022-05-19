@@ -31,7 +31,7 @@ roslaunch leo_gazebo leo_gazbeo.launch
 ```
 This should open a new window for the gazebo simulator. If for some reason, this throws an error, close your terminal, reopen it, and try again.
 
-# Run rviz
+# Run RViz
 To get a video of what the rover is seeing, open a new terminal tab and run the following command:
 ```
 roslaunch leo_viz rviz.launch
