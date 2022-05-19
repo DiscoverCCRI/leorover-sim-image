@@ -10,7 +10,7 @@ docker build --network=host -t sim_image:1.0 .
 # Run
 Run a container with this image by using the command:
 ```
-docker run -p 9000:80 -it --name my_ros_container user_image:1.0
+docker run -p 9000:80 -it --name my_ros_container sim_image:1.0
 ```
 Then, open your browser and go to the following address:
 ```
