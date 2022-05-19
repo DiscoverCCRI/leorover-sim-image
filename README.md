@@ -38,8 +38,8 @@ roslaunch leo_viz rviz.launch
 ```
 This should open a new new window for RViz. In this window, check the image checkbox, and open the dropdown menu. Here, make sure that the image topic is set to camera/raw, and that the transport hint is set to raw. Then, the image view window should reflect the view of the camera on the rover.
 
-# Python programming
-To use DiscoverCCRI's RoverAPI in your python programs, you will need to include import statements for each component. Each module is stored in the rover_api ROS package as a discover_<object_name>.py file. This means that to import the code, include something like this in your python script:
+# RoverAPI
+To use DiscoverCCRI's RoverAPI in your python scripts, you will need to include import statements for each component. Each module is stored in the rover_api ROS package as a discover_<object_name>.py file. This means that to import the code, include something like this in your python script:
 ```
 from rover_api.discover_camera import Camera
 ```
