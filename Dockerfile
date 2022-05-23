@@ -64,9 +64,10 @@ RUN mkdir -p ~/catkin_ws/src/rover_api/src/rover_api/ \
 && mv scripts/setup.py ~/catkin_ws/src/rover_api \
 && cd ~/catkin_ws/src/rover_api && mkdir scripts \
 && mv ~/catkin_ws/src/RoverAPI/scripts/example.py ~/catkin_ws/src/rover_api/scripts \
-&& chmod u+x ~/catkin_ws/rover_api/scripts/example.py \
-&& mkdir -p ~/scripts && mv ~/catkin_ws/src/RoverAPI/scripts ~/ \
-&& cd ~/scripts && chmod u+x * && rm builder.sh \
+&& chmod u+x ~/catkin_ws/src/rover_api/scripts/example.py \
+&& mv ~/catkin_ws/src/RoverAPI/scripts ~/ \
+&& cp ~/catkin_ws/src/rover_api/scripts/example.py ~/scripts/example.py \
+&& cd ~/scripts && chmod u+x * && rm builder.bash \
 && cd ~/catkin_ws/src/rover_api && echo "catkin_python_setup()" >> CMakeLists.txt \
 && echo "catkin_install_python(PROGRAMS src/rover_api/discover_rover.py src/rover_api/discover_camera.py DESTINATION \${CATKIN_PACKAGE_BIN_DESTINATION})" >> CMakeLists.txt
 
