@@ -75,4 +75,4 @@ RUN sudo apt-get -y autoremove && sudo apt-get -y autoclean
 RUN rm -rf /var/lib/apt/lists/* && rm -r ~/catkin_ws/src/RoverAPI
 
 # Build the catkin workspace
-#RUN . /opt/ros/$ROS_DISTRO/setup.bash && cd ~/catkin_ws && catkin_make
+RUN . /opt/ros/$ROS_DISTRO/setup.bash && cd ~/catkin_ws && catkin_make
