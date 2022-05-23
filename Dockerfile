@@ -48,7 +48,6 @@ ros-noetic-*-controller
 # Get needed packages
 RUN cd ~/catkin_ws/src \
 && git clone https://github.com/ros-simulation/gazebo_ros_pkgs.git 
-#RUN . /opt/ros/$ROS_DISTRO/setup.bash && cd ~/catkin_ws && catkin_make
 RUN cd ~/catkin_ws/src \ 
 && git clone https://github.com/LeoRover/leo_desktop.git \
 && git clone https://github.com/LeoRover/leo_simulator.git \
@@ -63,7 +62,10 @@ RUN mkdir -p ~/catkin_ws/src/rover_api/src/rover_api/ \
 && cd ~/catkin_ws/src/RoverAPI \
 && mv camera_driver/discover_camera.py rover_driver/discover_rover.py ~/catkin_ws/src/rover_api/src/rover_api/ \
 && mv scripts/setup.py ~/catkin_ws/src/rover_api \
-&& mkdir -p ~/scripts && mv scripts ~/ \
+&& cd ~/catkin_ws/src/rover_api && mkdir scripts \
+&& mv ~/catkin_ws/src/RoverAPI/scripts/example.py ~/catkin_ws/src/rover_api/scripts \
+&& chmod u+x ~/catkin_ws/rover_api/scripts/example.py \
+&& mkdir -p ~/scripts && mv ~/catkin_ws/src/RoverAPI/scripts ~/ \
 && cd ~/scripts && chmod u+x * && rm builder.sh \
 && cd ~/catkin_ws/src/rover_api && echo "catkin_python_setup()" >> CMakeLists.txt \
 && echo "catkin_install_python(PROGRAMS src/rover_api/discover_rover.py src/rover_api/discover_camera.py DESTINATION \${CATKIN_PACKAGE_BIN_DESTINATION})" >> CMakeLists.txt
@@ -73,4 +75,4 @@ RUN sudo apt-get -y autoremove && sudo apt-get -y autoclean
 RUN rm -rf /var/lib/apt/lists/* && rm -r ~/catkin_ws/src/RoverAPI
 
 # Build the catkin workspace
-#RUN . /opt/ros/$ROS_DISTRO/setup.bash && cd ~/catkin_ws && catkin_make
+RUN . /opt/ros/$ROS_DISTRO/setup.bash && cd ~/catkin_ws && catkin_make
