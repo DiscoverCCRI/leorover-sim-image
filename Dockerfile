@@ -71,8 +71,8 @@ RUN mkdir -p ~/catkin_ws/src/rover_api/src/rover_api/ \
 && echo "catkin_install_python(PROGRAMS src/rover_api/discover_rover.py src/rover_api/discover_camera.py DESTINATION \${CATKIN_PACKAGE_BIN_DESTINATION})" >> CMakeLists.txt
 
 # Set up world and launch
-RUN cd ~/catkin_ws/src/RoverAPI && mv launch ~/catkin_ws/src/rover_api/
-&& mv worlds/* /usr/share/gazebo-11/worlds
+RUN cd ~/catkin_ws/src/RoverAPI && mv launch ~/catkin_ws/src/rover_api/ \
+&& mv worlds/* /usr/share/gazebo-11/worlds \
 && mv media/dem/* /usr/share/gazebo-11/media/dem
 
 # Clean
