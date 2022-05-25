@@ -47,8 +47,7 @@ ros-noetic-*-controller
 
 # Get needed packages
 RUN cd ~/catkin_ws/src \
-&& git clone https://github.com/ros-simulation/gazebo_ros_pkgs.git 
-RUN cd ~/catkin_ws/src \ 
+&& git clone https://github.com/ros-simulation/gazebo_ros_pkgs.git \ 
 && git clone https://github.com/LeoRover/leo_desktop.git \
 && git clone https://github.com/LeoRover/leo_simulator.git \
 && git clone https://github.com/LeoRover/leo_common.git
@@ -70,6 +69,11 @@ RUN mkdir -p ~/catkin_ws/src/rover_api/src/rover_api/ \
 && cd ~/scripts && chmod u+x * && rm builder.bash \
 && cd ~/catkin_ws/src/rover_api && echo "catkin_python_setup()" >> CMakeLists.txt \
 && echo "catkin_install_python(PROGRAMS src/rover_api/discover_rover.py src/rover_api/discover_camera.py DESTINATION \${CATKIN_PACKAGE_BIN_DESTINATION})" >> CMakeLists.txt
+
+# Set up world and launch
+RUN cd ~/catkin_ws/src/RoverAPI && mv launch ~/catkin_ws/src/rover_api/
+&& mv worlds/* /usr/share/gazebo-11/worlds
+&& mv media/dem/* /usr/share/gazebo-11/media/dem
 
 # Clean
 RUN sudo apt-get -y autoremove && sudo apt-get -y autoclean 
