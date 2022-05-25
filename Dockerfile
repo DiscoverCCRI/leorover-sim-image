@@ -72,8 +72,8 @@ RUN mkdir -p ~/catkin_ws/src/rover_api/src/rover_api/ \
 
 # Set up world and launch
 RUN cd ~/catkin_ws/src/RoverAPI && mv launch ~/catkin_ws/src/rover_api/ \
-&& mv worlds/* /usr/share/gazebo-11/worlds \
-&& mv media/dem/* /usr/share/gazebo-11/media/dem
+&& mv gazebo/worlds/* /usr/share/gazebo-11/worlds \
+&& mv gazebo/media/dem/* /usr/share/gazebo-11/media/dem
 
 # Clean
 RUN sudo apt-get -y autoremove && sudo apt-get -y autoclean 
