@@ -57,7 +57,6 @@ RUN git clone -b simulation https://github.com/DiscoverCCRI/RoverAPI.git \
 && mv RoverAPI/rover_api ~/catkin_ws/src \
 && mkdir -p ~/scripts && mv RoverAPI/scripts/setup.bash ~/scripts \ 
 && mv RoverAPI/scripts/example.py ~/scripts \ 
-&& sudo rm -r RoverAPI
 
 # Set up world and launch
 RUN cd ~/catkin_ws/src/RoverAPI && mv launch ~/catkin_ws/src/rover_api/ \
@@ -66,7 +65,7 @@ RUN cd ~/catkin_ws/src/RoverAPI && mv launch ~/catkin_ws/src/rover_api/ \
 
 # Clean
 RUN sudo apt-get -y autoremove && sudo apt-get -y autoclean 
-RUN rm -rf /var/lib/apt/lists/* && rm -r ~/catkin_ws/src/RoverAPI
+RUN rm -rf /var/lib/apt/lists/* && sudo rm -r ~/RoverAPI
 
 # Build the catkin workspace
 #RUN . /opt/ros/$ROS_DISTRO/setup.bash && cd ~/catkin_ws && catkin_make
