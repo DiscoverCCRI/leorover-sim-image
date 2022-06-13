@@ -60,7 +60,7 @@ RUN git clone -b simulation https://github.com/DiscoverCCRI/RoverAPI.git \
 && chmod u+x ~/scripts/*
 
 # Set up world and launch
-RUN cd ~/catkin_ws/src/RoverAPI \
+RUN cd ~/RoverAPI \
 && mv gazebo/worlds/* /usr/share/gazebo-11/worlds \
 && mv gazebo/media/dem/* /usr/share/gazebo-11/media/dem
 
@@ -69,4 +69,4 @@ RUN sudo apt-get -y autoremove && sudo apt-get -y autoclean
 RUN rm -rf /var/lib/apt/lists/* && sudo rm -r ~/RoverAPI
 
 # Build the catkin workspace
-#RUN . /opt/ros/$ROS_DISTRO/setup.bash && cd ~/catkin_ws && catkin_make
+RUN . /opt/ros/$ROS_DISTRO/setup.bash && cd ~/catkin_ws && catkin_make
