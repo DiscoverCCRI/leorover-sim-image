@@ -60,7 +60,7 @@ RUN git clone -b simulation https://github.com/DiscoverCCRI/RoverAPI.git \
 && chmod u+x ~/scripts/*
 
 # Set up world and launch
-RUN cd ~/catkin_ws/src/RoverAPI && mv launch ~/catkin_ws/src/rover_api/ \
+RUN cd ~/catkin_ws/src/RoverAPI \
 && mv gazebo/worlds/* /usr/share/gazebo-11/worlds \
 && mv gazebo/media/dem/* /usr/share/gazebo-11/media/dem
 
