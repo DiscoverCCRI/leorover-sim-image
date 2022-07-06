@@ -11,9 +11,11 @@ SHELL ["/bin/bash", "-c"]
 RUN echo "deb http://archive.ubuntu.com/ubuntu bionic main universe" >> /etc/apt/sources.list
 RUN echo "deb http://archive.ubuntu.com/ubuntu bionic-security main universe" >> /etc/apt/sources.list
 RUN echo "deb http://archive.ubuntu.com/ubuntu bionic-updates main universe" >> /etc/apt/sources.list
+RUN wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
+RUN sudo dpkg -i google-chrome-stable_current_amd64.deb
 
 # Update and get git
-RUN apt-get update && apt-get -y full-upgrade && apt-get -y install git vim
+RUN apt-get update && apt-get -y full-upgrade && apt-get -y install git vim wget
 
 # ROS Install
 RUN sudo sh -c 'echo "deb http://packages.ros.org/ros/ubuntu $(lsb_release -sc) main" > /etc/apt/sources.list.d/ros-latest.list'
@@ -27,6 +29,11 @@ RUN echo "source /opt/ros/$ROS_DISTRO/setup.bash" >> ~/.bashrc
 RUN sudo apt-get -y install \
 python3-rosdep python3-rosinstall python3-rosinstall-generator \
 python3-wstool build-essential
+
+# Get python dependencies
+RUN wget https://bootstrap.pypa.io/get-pip.py
+RUN python3 get-pip.py
+RUN pip3 install opencv-python numpy matplotlib
 
 # Bootstrap rosdep
 RUN sudo rosdep init && rosdep update
@@ -44,6 +51,8 @@ RUN echo "source ~/catkin_ws/devel/setup.bash" >> ~/.bashrc
 # Install teleop keyboard tools
 RUN sudo apt-get -y install ros-noetic-teleop-twist-keyboard \
 ros-noetic-*-controller
+
+
 
 # Get needed packages
 RUN cd ~/catkin_ws/src \
@@ -67,6 +76,7 @@ RUN cd ~/RoverAPI \
 # Clean
 RUN sudo apt-get -y autoremove && sudo apt-get -y autoclean 
 RUN rm -rf /var/lib/apt/lists/* && sudo rm -r ~/RoverAPI
+RUN rm *.py *.deb
 
 # Build the catkin workspace
 RUN . /opt/ros/$ROS_DISTRO/setup.bash && cd ~/catkin_ws && catkin_make
