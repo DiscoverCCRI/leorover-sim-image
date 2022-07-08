@@ -59,7 +59,8 @@ RUN cd ~/catkin_ws/src \
 && git clone https://github.com/ros-simulation/gazebo_ros_pkgs.git \ 
 && git clone https://github.com/LeoRover/leo_desktop.git \
 && git clone https://github.com/LeoRover/leo_simulator.git \
-&& git clone https://github.com/LeoRover/leo_common.git
+&& git clone https://github.com/LeoRover/leo_common.git \
+&& git clone https://github.com/Slamtec/rplidar_ros.git
 
 # Make the package for the API
 RUN git clone -b simulation https://github.com/DiscoverCCRI/RoverAPI.git \
@@ -71,12 +72,18 @@ RUN git clone -b simulation https://github.com/DiscoverCCRI/RoverAPI.git \
 # Set up world and launch
 RUN cd ~/RoverAPI \
 && mv gazebo/worlds/* /usr/share/gazebo-11/worlds \
-&& mv gazebo/media/dem/* /usr/share/gazebo-11/media/dem
+&& mv gazebo/media/dem/* /usr/share/gazebo-11/media/dem \
+&& mv gazebo/macros.xacro ~/catkin_ws/src/leo_common/leo_description/urdf \
+&& mv gazebo/*.stl ~/catkin_ws/src/leo_common/leo_description/models
 
 # Clean
 RUN sudo apt-get -y autoremove && sudo apt-get -y autoclean 
 RUN rm -rf /var/lib/apt/lists/* && sudo rm -r ~/RoverAPI
 RUN rm *.py *.deb
+RUN rm -r ~/catkin_ws/src/rover_api/src/rover_api \
+&& git clone http://github.com/DiscoverCCRI/RoverAPI.git \ 
+&& mv RoverAPI/rover_api/src/rover_api ~/catkin_ws/src/rover_api/src \
+&& sudo rm -r RoverAPI
 
 # Build the catkin workspace
 RUN . /opt/ros/$ROS_DISTRO/setup.bash && cd ~/catkin_ws && catkin_make
