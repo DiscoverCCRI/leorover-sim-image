@@ -41,7 +41,7 @@ RUN sudo rosdep init && rosdep update
 # Get gazebo
 RUN curl -sSL http://get.gazebosim.org | sh
 RUN sudo apt-get -y install ros-noetic-gazebo-ros-pkgs \
-ros-noetic-gazebo-ros-control
+ros-noetic-gazebo-ros-control ros-noetic-map-server
 RUN sudo apt-get install -y libgazebo11-dev
 
 # Setup catkin workspace
