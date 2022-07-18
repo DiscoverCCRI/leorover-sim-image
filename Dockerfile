@@ -60,7 +60,9 @@ RUN cd ~/catkin_ws/src \
 && git clone https://github.com/LeoRover/leo_desktop.git \
 && git clone https://github.com/LeoRover/leo_simulator.git \
 && git clone https://github.com/LeoRover/leo_common.git \
-&& git clone https://github.com/Slamtec/rplidar_ros.git
+&& git clone https://github.com/Slamtec/rplidar_ros.git \
+&& git clone https://github.com/tu-darmstadt-ros-pkg/hector_slam.git
+
 
 # Make the package for the API
 RUN git clone -b simulation https://github.com/DiscoverCCRI/RoverAPI.git \
@@ -75,6 +77,9 @@ RUN cd ~/RoverAPI \
 && mv gazebo/media/dem/* /usr/share/gazebo-11/media/dem \
 && mv gazebo/macros.xacro ~/catkin_ws/src/leo_common/leo_description/urdf \
 && mv gazebo/*.stl ~/catkin_ws/src/leo_common/leo_description/models
+&& mv gazebo/tutorial* ~/catkin_ws/src/hector_slam/hector_slam_launch/launch \
+&& mv gazebo/mapping_default* ~/catkin_ws/src/hector_slam/hector_mapping/launch
+
 
 # Clean
 RUN sudo apt-get -y autoremove && sudo apt-get -y autoclean 
