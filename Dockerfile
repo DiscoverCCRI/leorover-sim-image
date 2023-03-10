@@ -79,7 +79,7 @@ RUN cd ~/catkin_ws \
 
 
 # Make the package for the API
-RUN git clone -b simulation https://github.com/DiscoverCCRI/RoverAPI.git \
+RUN git clone https://github.com/DiscoverCCRI/RoverAPI.git \
 && mv RoverAPI/rover_api ~/catkin_ws/src \
 && mkdir -p ~/scripts && mv RoverAPI/scripts/setup.bash ~/scripts \ 
 && mv RoverAPI/scripts/example.py ~/scripts \
