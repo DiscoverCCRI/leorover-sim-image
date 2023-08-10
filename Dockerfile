@@ -10,17 +10,23 @@ ENV ROS_DISTRO=noetic
 SHELL ["/bin/bash", "-c"]
 
 
+
+
 # add sources
 RUN echo "deb http://archive.ubuntu.com/ubuntu bionic main universe" >> /etc/apt/sources.list
 RUN echo "deb http://archive.ubuntu.com/ubuntu bionic-security main universe" >> /etc/apt/sources.list
 RUN echo "deb http://archive.ubuntu.com/ubuntu bionic-updates main universe" >> /etc/apt/sources.list
+RUN sudo apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys 6494C6D6997C215E
+RUN apt-key adv --keyserver keyserver.ubuntu.com --recv-keys 605C66F00D6C9793
+RUN apt-key adv --keyserver keyserver.ubuntu.com --recv-keys 0E98404D386FA1D9
+RUN apt-key adv --keyserver keyserver.ubuntu.com --recv-keys 648ACFD622F3D138
+RUN sudo apt update && sudo apt -y install libu2f-udev
 RUN wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
 RUN sudo dpkg -i google-chrome-stable_current_amd64.deb
 
 
 # Update and get git
 RUN apt-get update && apt-get -y full-upgrade && apt-get -y install git vim wget
-
 
 # ROS Install
 RUN sudo sh -c 'echo "deb http://packages.ros.org/ros/ubuntu $(lsb_release -sc) main" > /etc/apt/sources.list.d/ros-latest.list'
@@ -68,8 +74,8 @@ RUN cd ~/catkin_ws/src \
 && git clone https://github.com/LeoRover/leo_simulator.git \
 && git clone https://github.com/LeoRover/leo_common.git \
 && git clone https://github.com/Slamtec/rplidar_ros.git \
-&& git clone https://github.com/LeoRover/leo_navigation_tutorial.git
-
+&& git clone https://github.com/LeoRover/leo_navigation_tutorial.git \
+&& git clone https://github.com/machinekoder/ar_track_alvar.git -b noetic-devel
 
 # Setup rosdep
 RUN cd ~/catkin_ws \
@@ -79,11 +85,17 @@ RUN cd ~/catkin_ws \
 
 
 # Make the package for the API
-RUN git clone https://github.com/DiscoverCCRI/RoverAPI.git \
-&& mv RoverAPI/rover_api ~/catkin_ws/src \
-&& mkdir -p ~/scripts && mv RoverAPI/scripts/setup.bash ~/scripts \ 
-&& mv RoverAPI/scripts/example.py ~/scripts \
-&& chmod u+x ~/scripts/*
+RUN git clone -b simulation https://github.com/DiscoverCCRI/RoverAPI.git \
+&& mv RoverAPI/rover_api ~/catkin_ws/src 
+
+
+# Get ARTags imported
+RUN cd ~/ \
+&& git clone https://github.com/mikaelarguedas/gazebo_models.git \
+&& cd gazebo_models/ar_tags/scripts \
+&& ./generate_markers_model.py -g /usr/share/gazebo-11/models \
+&& cd ~/ \
+&& rm -r gazebo_models
 
 
 # Set up world and launch
@@ -102,7 +114,8 @@ RUN rm -r ~/catkin_ws/src/rover_api/src/rover_api \
 && git clone http://github.com/DiscoverCCRI/RoverAPI.git \ 
 && mv RoverAPI/rover_api/src/rover_api ~/catkin_ws/src/rover_api/src \
 && sudo rm -r RoverAPI
-
+RUN git clone https://github.com/DFKI-NI/rospy_message_converter.git \
+&& mv rospy_message_converter ~/catkin_ws/src
 
 # Build the catkin workspace
 RUN . /opt/ros/$ROS_DISTRO/setup.bash && cd ~/catkin_ws && catkin_make
